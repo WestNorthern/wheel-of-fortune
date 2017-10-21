@@ -1,17 +1,17 @@
 
 
-const clueArray = ['quixotic'];
+const phraseArray = ['quixotic'];
 
 
 class Game {
 
-  constructor(clueArr){
+  constructor(phraseArr){
 
-    this.clueArr = clueArray;
-    this.clue = this.clueArr[0].split('');
+    this.phraseArr = phraseArr;
+    this.phrase = this.phraseArr[0].split('');
     this.correctLetters = [];
     this.abcArr = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'];
-    this.clueLetters =  this.clue.filter(function(elem, index, self) 
+    this.phraseLetters =  this.phrase.filter(function(elem, index, self) 
     {
       return index == self.indexOf(elem); 
     }) // Eliminates duplicate letters for clue checker
@@ -19,7 +19,7 @@ class Game {
   } // End of constructor
 
   checkIfWon(){
-    if (this.correctLetters.length == this.clueLetters.length) {
+    if (this.correctLetters.length == this.phraseLetters.length) {
       alert('You win!');
     }
     else {
@@ -28,16 +28,14 @@ class Game {
   } // End of checkIfWon method
 
   displayClue(){
-    console.log(this.clue);
-    console.log(this.clueArr);
-    console.log(this.clueLetters);
+
   }
 
   guessLetter(){
     let letter = prompt('Guess a letter!');
 
 
-    if(this.clue.includes(letter)){
+    if(this.phrase.includes(letter)){
       if(this.correctLetters.includes(letter)){
         alert("You've already guessed that letter!");
         this.guessLetter();
@@ -46,6 +44,7 @@ class Game {
       this.correctLetters.push(letter);
       }
     }
+
     this.checkIfWon();
 
   }
@@ -64,7 +63,7 @@ class Game {
 
 $(function() { // Document ready function
   
-  let wof = new Game();
+  let wof = new Game(phraseArray);
 
   wof.displayClue();
   wof.checkIfWon();
