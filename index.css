@@ -1,0 +1,25 @@
+.phrase-letter {
+	width: 150px;
+	height: 200px;
+	border: 2px solid black;
+	background: lime;
+	color: aliceblue;
+	font-size: 3em;
+	line-height: 200px;
+	margin: 2%;
+	text-align: center;
+}
+
+
+.abcs {
+	width: 30px;
+	height: 30px;
+	background: aliceblue;
+	color: blue;
+	font-size: 1em;
+	text-align: center;
+	line-height: 30px;
+	border-radius: 3px;
+	border: 1px solid darkgray;
+	margin: .5%;
+}
