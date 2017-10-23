@@ -109,18 +109,56 @@ class Game {
 
 
     if(this.phrase.includes(letter)){
+
       if(this.correctLetters.includes(letter)){
         alert("You've already guessed that letter!");
-        this.guessLetter();
       }
       else{
       this.correctLetters.push(letter);
+        if (playerOne.turn == true){
+          playerOne.money += 200;
+          console.log(playerOne.money);
+        }
+        if (playerTwo.turn == true){
+          playerTwo.money += 200;
+        }
+        if (playerThree.turn == true){
+          playerThree.money += 200;
+        }
+
       }
     }
-
-    if (this.phrase.includes(letter) == false) {
+    switch(this.phrase.includes(letter) == false) {
+    case playerOne.turn == true:
+      playerOne.turn = false;
+      playerOne.money -= 200;
+      playerTwo.turn = true;
+      this.displayPhrase();
+      this.displayLetters();
       this.incorrectLetters.push(letter);
+      break;
+
+    case playerTwo.turn === true:
+      playerTwo.money -= 200;
+      console.log('Player two: ' + playerTwo.turn);
+      playerTwo.turn = false;
+      playerThree.turn = true;
+      this.displayPhrase();
+      this.displayLetters();
+      this.incorrectLetters.push(letter);
+      break;
+
+    case playerThree.turn === true:
+      playerThree.money -= 200;
+      console.log('Player three: ' + playerThree.turn);
+      playerThree.turn = false;
+      playerOne.turn = true;
+      this.displayPhrase();
+      this.displayLetters();
+      this.incorrectLetters.push(letter);
+      break;
     }
+ 
     this.displayPhrase();
     this.displayLetters();
     this.checkIfWon();
@@ -148,6 +186,10 @@ class Game {
     $('.cluebox').text(this.phraseArr.clue);
     this.displayPhrase();
     this.displayLetters();
+  }
+
+  displayMoney(){
+
   }
 
 
