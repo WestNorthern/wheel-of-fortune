@@ -9,13 +9,16 @@ class Game {
 
     this.phraseArr = phraseArr;
     this.phrase = this.phraseArr[0].split('');
+    this.noSpacePhrase =  this.phrase.filter(function(str) {
+    return /\S/.test(str);
+    });
     this.correctLetters = ['n', 't'];
     this.incorrectLetters = [];
     this.abcArr = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'];
-    this.phraseLetters =  this.phrase.filter(function(elem, index, self) 
+    this.phraseLetters =  this.noSpacePhrase.filter(function(elem, index, self) 
     {
       return index == self.indexOf(elem); 
-    }) // Eliminates duplicate letters for clue checker
+    }); // Eliminates duplicate letters for clue checker
 
   } // End of constructor
 
@@ -60,14 +63,23 @@ class Game {
     if (this.phrase.includes(letter) == false) {
       this.incorrectLetters.push(letter);
     }
-
+    this.displayPhrase();
+    this.displayLetters();
     this.checkIfWon();
+    
 
   }
 
   displayLetters() {
+    $('#letters-list').empty();
+
     for (var i = 0; i < this.abcArr.length; i++) {
+      if (this.correctLetters.includes(this.abcArr[i]) || this.incorrectLetters.includes(this.abcArr[i])){
+        $('#letters-list').append(`<div class="col-1 abcs" data-letter="${this.abcArr[i]}" style="background: black; color: red;"> ${this.abcArr[i].toUpperCase()}</div>`);
+      }
+      else {
       $('#letters-list').append(`<div class="col-1 abcs" data-letter="${this.abcArr[i]}"> ${this.abcArr[i].toUpperCase()}</div>`);
+      }
     }
   }
 
