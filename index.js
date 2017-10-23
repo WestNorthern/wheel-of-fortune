@@ -65,8 +65,8 @@ $(function() { // Document ready function
   
   let wof = new Game(phraseArray);
 
-  wof.displayClue();
-  wof.checkIfWon();
+  // wof.displayClue();
+  // wof.checkIfWon();
 
 
 }); // End of Document Ready Function
