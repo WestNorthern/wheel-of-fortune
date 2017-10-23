@@ -132,7 +132,10 @@ class Game {
     $('#letters-list').empty();
 
     for (var i = 0; i < this.abcArr.length; i++) {
-      if (this.correctLetters.includes(this.abcArr[i]) || this.incorrectLetters.includes(this.abcArr[i])){
+      if (this.correctLetters.includes(this.abcArr[i])){
+        $('#letters-list').append(`<div class="col-1 abcs" data-letter="${this.abcArr[i]}" style="background: black; color: lime;"> ${this.abcArr[i].toUpperCase()}</div>`);
+      }
+      else if (this.incorrectLetters.includes(this.abcArr[i])) {
         $('#letters-list').append(`<div class="col-1 abcs" data-letter="${this.abcArr[i]}" style="background: black; color: red;"> ${this.abcArr[i].toUpperCase()}</div>`);
       }
       else {
