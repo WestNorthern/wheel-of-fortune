@@ -71,7 +71,8 @@ class Game {
     }); // Filters out all of the white space
     this.correctLetters = [];
     this.incorrectLetters = [];
-    this.abcArr = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'];
+    this.abcArr = ['b','c','d','f','g','h','j','k','l','m','n','p','q','r','s','t','v','w','x','y','z'];
+    this.vowArr = ['a', 'e', 'i', 'o', 'u'];
     this.phraseLetters =  this.noSpacePhrase.filter(function(elem, index, self) 
     {
       return index == self.indexOf(elem); 
@@ -143,16 +144,29 @@ class Game {
 
   displayLetters() {
     $('#letters-list').empty();
+    $('#vowels-list').empty();
 
     for (var i = 0; i < this.abcArr.length; i++) {
       if (this.correctLetters.includes(this.abcArr[i])){
-        $('#letters-list').append(`<div class="col-1 abcs" data-letter="${this.abcArr[i]}" style="background: black; color: lime;"> ${this.abcArr[i].toUpperCase()}</div>`);
+        $('#letters-list').append(`<div class="col abcs" data-letter="${this.abcArr[i]}" style="background: black; color: lime;"> ${this.abcArr[i].toUpperCase()}</div>`);
       }
       else if (this.incorrectLetters.includes(this.abcArr[i])) {
-        $('#letters-list').append(`<div class="col-1 abcs" data-letter="${this.abcArr[i]}" style="background: black; color: red;"> ${this.abcArr[i].toUpperCase()}</div>`);
+        $('#letters-list').append(`<div class="col abcs" data-letter="${this.abcArr[i]}" style="background: black; color: red;"> ${this.abcArr[i].toUpperCase()}</div>`);
       }
       else {
-      $('#letters-list').append(`<div class="col-1 abcs" data-letter="${this.abcArr[i]}"> ${this.abcArr[i].toUpperCase()}</div>`);
+        $('#letters-list').append(`<div class="col abcs" data-letter="${this.abcArr[i]}"> ${this.abcArr[i].toUpperCase()}</div>`);
+      }
+    }
+
+    for (var i = 0; i < this.vowArr.length; i++) {
+      if (this.correctLetters.includes(this.vowArr[i])){
+        $('#vowels-list').append(`<div class="col vowels" data-letter="${this.vowArr[i]}" style="background: black; color: lime;"> ${this.vowArr[i].toUpperCase()}</div>`);
+      }
+      else if (this.incorrectLetters.includes(this.vowArr[i])) {
+        $('#vowels-list').append(`<div class="col vowels" data-letter="${this.vowArr[i]}" style="background: black; color: red;"> ${this.vowArr[i].toUpperCase()}</div>`);
+      }
+      else {
+        $('#vowels-list').append(`<div class="col vowels" data-letter="${this.vowArr[i]}"> ${this.vowArr[i].toUpperCase()}</div>`);
       }
     }
   }
@@ -247,6 +261,10 @@ $(function() { // Document ready function
     wof.guessLetter(letter);
   })
 
+  $(document).on('click', '.vowels', function(){
+    let letter = $(this).data('letter');
+    wof.guessLetter(letter);
+  })
   
   let wof = new Game(phraseArray);
   
