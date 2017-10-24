@@ -81,7 +81,7 @@ class Game {
 
   checkIfWon(){
     if (this.correctLetters.length == this.phraseLetters.length) {
-      alert('You win!');
+      alert(`${this.returnCurrentPlayer()} has solved the puzzle!`);
     }
     else{
       this.displayPhrase();
@@ -218,6 +218,17 @@ class Game {
     }
   }
 
+  returnCurrentPlayer(){
+    if (this.playerOne.turn === true && this.playerTwo.turn === false && this.playerThree.turn === false){
+      return this.playerOne.name;
+    }
+    else if (this.playerTwo.turn === true && this.playerThree.turn === false && this.playerOne.turn === false){
+      return this.playerTwo.name;
+    }
+    else if (this.playerThree.turn === true && this.playerOne.turn === false && this.playerTwo.turn === false){
+      return this.playerThree.name;
+    }
+  }
 
 }
 
