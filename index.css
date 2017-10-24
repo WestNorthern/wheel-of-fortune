@@ -36,3 +36,11 @@
 	color: aliceblue;
 	background: black;
 }
+
+.player {
+	height: 200px;
+	font-size: 2em;
+	text-align: center;
+	background: lime;
+	color: darkgray;
+}
