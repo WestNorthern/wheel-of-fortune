@@ -18,7 +18,7 @@ const phraseArray = [
                         clue: 'Windmill Tilting'
                       },
                       {
-                        phrase: ' jumping    spiders',
+                        phrase: ' jumping      spiders',
                         clue: 'Nope.'
                       },
                       {
@@ -177,14 +177,15 @@ class Game {
     this.displayPhrase();
     this.displayLetters();
     this.displayMoney();
+    console.log(this.phraseArr)
     
   }
 
   displayMoney(){
     $('.players').empty();
-    $('.players').append(`<div class="col-4 player">Player: ${this.playerOne.name}</br> Money: $ ${this.playerOne.money}</br> Turn: ${this.playerOne.turn}`)
-    $('.players').append(`<div class="col-4 player">Player: ${this.playerTwo.name}</br> Money: $ ${this.playerTwo.money}</br> Turn: ${this.playerTwo.turn}`)
-    $('.players').append(`<div class="col-4 player">Player: ${this.playerThree.name}</br> Money: $ ${this.playerThree.money}</br> Turn: ${this.playerThree.turn}`)
+    $('.players').append(`<div class="col-3 player">Player: ${this.playerOne.name}</br> Money: $ ${this.playerOne.money}</br> Turn: ${this.playerOne.turn}`)
+    $('.players').append(`<div class="col-3 player">Player: ${this.playerTwo.name}</br> Money: $ ${this.playerTwo.money}</br> Turn: ${this.playerTwo.turn}`)
+    $('.players').append(`<div class="col-3 player">Player: ${this.playerThree.name}</br> Money: $ ${this.playerThree.money}</br> Turn: ${this.playerThree.turn}`)
 
   }
 
@@ -244,6 +245,21 @@ class Game {
     }
   }
 
+  solveByPhrase() {
+    let guess = prompt("So you'd like to solve the puzzle...");
+    guess = guess.split('').filter(function(str) { return /\S/g.test(str); }).join('');
+    console.log(guess);
+    console.log(this.phrase.filter(function(str) {
+    return /\S/g.test(str);
+    }).join(''));
+    if (guess == this.phrase.filter(function(str) { return /\S/g.test(str);}).join('')){
+      alert(`${this.returnCurrentPlayer()} has solved the puzzle!`);
+    }
+    else{
+      alert('Nope');
+    }
+  }
+
 }
 
 
@@ -264,6 +280,10 @@ $(function() { // Document ready function
   $(document).on('click', '.vowels', function(){
     let letter = $(this).data('letter');
     wof.guessLetter(letter);
+  })
+
+  $(document).on('click', '.solvebox', function(){
+    wof.solveByPhrase();
   })
   
   let wof = new Game(phraseArray);
