@@ -18,7 +18,7 @@ const phraseArray = [
                         clue: 'Windmill Tilting'
                       },
                       {
-                        phrase: ' jumping    spiders',
+                        phrase: ' jumping      spiders',
                         clue: 'Nope.'
                       },
                       {
@@ -71,7 +71,8 @@ class Game {
     }); // Filters out all of the white space
     this.correctLetters = [];
     this.incorrectLetters = [];
-    this.abcArr = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'];
+    this.abcArr = ['b','c','d','f','g','h','j','k','l','m','n','p','q','r','s','t','v','w','x','y','z'];
+    this.vowArr = ['a', 'e', 'i', 'o', 'u'];
     this.phraseLetters =  this.noSpacePhrase.filter(function(elem, index, self) 
     {
       return index == self.indexOf(elem); 
@@ -143,16 +144,29 @@ class Game {
 
   displayLetters() {
     $('#letters-list').empty();
+    $('#vowels-list').empty();
 
     for (var i = 0; i < this.abcArr.length; i++) {
       if (this.correctLetters.includes(this.abcArr[i])){
-        $('#letters-list').append(`<div class="col-1 abcs" data-letter="${this.abcArr[i]}" style="background: black; color: lime;"> ${this.abcArr[i].toUpperCase()}</div>`);
+        $('#letters-list').append(`<div class="col abcs" data-letter="${this.abcArr[i]}" style="background: black; color: lime;"> ${this.abcArr[i].toUpperCase()}</div>`);
       }
       else if (this.incorrectLetters.includes(this.abcArr[i])) {
-        $('#letters-list').append(`<div class="col-1 abcs" data-letter="${this.abcArr[i]}" style="background: black; color: red;"> ${this.abcArr[i].toUpperCase()}</div>`);
+        $('#letters-list').append(`<div class="col abcs" data-letter="${this.abcArr[i]}" style="background: black; color: red;"> ${this.abcArr[i].toUpperCase()}</div>`);
       }
       else {
-      $('#letters-list').append(`<div class="col-1 abcs" data-letter="${this.abcArr[i]}"> ${this.abcArr[i].toUpperCase()}</div>`);
+        $('#letters-list').append(`<div class="col abcs" data-letter="${this.abcArr[i]}"> ${this.abcArr[i].toUpperCase()}</div>`);
+      }
+    }
+
+    for (var i = 0; i < this.vowArr.length; i++) {
+      if (this.correctLetters.includes(this.vowArr[i])){
+        $('#vowels-list').append(`<div class="col vowels" data-letter="${this.vowArr[i]}" style="background: black; color: lime;"> ${this.vowArr[i].toUpperCase()}</div>`);
+      }
+      else if (this.incorrectLetters.includes(this.vowArr[i])) {
+        $('#vowels-list').append(`<div class="col vowels" data-letter="${this.vowArr[i]}" style="background: black; color: red;"> ${this.vowArr[i].toUpperCase()}</div>`);
+      }
+      else {
+        $('#vowels-list').append(`<div class="col vowels" data-letter="${this.vowArr[i]}"> ${this.vowArr[i].toUpperCase()}</div>`);
       }
     }
   }
@@ -163,14 +177,15 @@ class Game {
     this.displayPhrase();
     this.displayLetters();
     this.displayMoney();
+    console.log(this.phraseArr)
     
   }
 
   displayMoney(){
     $('.players').empty();
-    $('.players').append(`<div class="col-4 player">Player: ${this.playerOne.name}</br> Money: $ ${this.playerOne.money}</br> Turn: ${this.playerOne.turn}`)
-    $('.players').append(`<div class="col-4 player">Player: ${this.playerTwo.name}</br> Money: $ ${this.playerTwo.money}</br> Turn: ${this.playerTwo.turn}`)
-    $('.players').append(`<div class="col-4 player">Player: ${this.playerThree.name}</br> Money: $ ${this.playerThree.money}</br> Turn: ${this.playerThree.turn}`)
+    $('.players').append(`<div class="col-3 player">Player: ${this.playerOne.name}</br> Money: $ ${this.playerOne.money}</br> Turn: ${this.playerOne.turn}`)
+    $('.players').append(`<div class="col-3 player">Player: ${this.playerTwo.name}</br> Money: $ ${this.playerTwo.money}</br> Turn: ${this.playerTwo.turn}`)
+    $('.players').append(`<div class="col-3 player">Player: ${this.playerThree.name}</br> Money: $ ${this.playerThree.money}</br> Turn: ${this.playerThree.turn}`)
 
   }
 
@@ -230,6 +245,21 @@ class Game {
     }
   }
 
+  solveByPhrase() {
+    let guess = prompt("So you'd like to solve the puzzle...");
+    guess = guess.split('').filter(function(str) { return /\S/g.test(str); }).join('');
+    console.log(guess);
+    console.log(this.phrase.filter(function(str) {
+    return /\S/g.test(str);
+    }).join(''));
+    if (guess == this.phrase.filter(function(str) { return /\S/g.test(str);}).join('')){
+      alert(`${this.returnCurrentPlayer()} has solved the puzzle!`);
+    }
+    else{
+      alert('Nope');
+    }
+  }
+
 }
 
 
@@ -247,6 +277,14 @@ $(function() { // Document ready function
     wof.guessLetter(letter);
   })
 
+  $(document).on('click', '.vowels', function(){
+    let letter = $(this).data('letter');
+    wof.guessLetter(letter);
+  })
+
+  $(document).on('click', '.solvebox', function(){
+    wof.solveByPhrase();
+  })
   
   let wof = new Game(phraseArray);
   
