@@ -35,26 +35,6 @@ const phraseArray = [
                       },
                     ];
 
-let playerOne = {
-                  money: 0,
-                  name: 'Player One',
-                  turn: true
-
-                };
-
-let playerTwo = {
-                  money: 0,
-                  name: 'Player Two',
-                  turn: false
-
-                };
-
-let playerThree = {
-                  money: 0,
-                  name: 'Player Three',
-                  turn: false
-
-                };            
 
 
 
@@ -62,12 +42,33 @@ let playerThree = {
 class Game {
 
   constructor(phraseArr){
+    this.playerOne = {
+                  money: 0,
+                  name: 'Player One',
+                  turn: false
+
+                };
+
+    this.playerTwo = {
+                  money: 0,
+                  name: 'Player Two',
+                  turn: false
+
+                };
+
+    this.playerThree = {
+                  money: 0,
+                  name: 'Player Three',
+                  turn: false
+
+                };            
+
 
     this.phraseArr = phraseArr[(Math.floor(Math.random() * phraseArr.length))];
     this.phrase = this.phraseArr.phrase.split('');
     this.noSpacePhrase =  this.phrase.filter(function(str) {
     return /\S/g.test(str);
-    });
+    }); // Filters out all of the white space
     this.correctLetters = [];
     this.incorrectLetters = [];
     this.abcArr = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'];
@@ -80,13 +81,11 @@ class Game {
 
   checkIfWon(){
     if (this.correctLetters.length == this.phraseLetters.length) {
-      alert('You win!');
+      alert(`${this.returnCurrentPlayer()} has solved the puzzle!`);
     }
     else{
       this.displayPhrase();
     }
-    console.log(this.phraseLetters);
-    console.log(this.correctLetters);
   } // End of checkIfWon method
 
   displayPhrase(){
@@ -109,21 +108,35 @@ class Game {
 
 
     if(this.phrase.includes(letter)){
+
       if(this.correctLetters.includes(letter)){
         alert("You've already guessed that letter!");
-        this.guessLetter();
       }
       else{
-      this.correctLetters.push(letter);
+        this.correctLetters.push(letter);
+        this.addMoney();
+
       }
+
     }
 
-    if (this.phrase.includes(letter) == false) {
-      this.incorrectLetters.push(letter);
+    if (this.phraseLetters.includes(letter) === false) {
+      
+       this.incorrectLetters.push(letter);
+       console.log(this.incorrectLetters);
+       this.subtractMoney();
+       this.changePlayer();
+       this.displayPhrase();
+       this.displayLetters();
+       this.displayMoney();
+       console.log('incorrect')
+
     }
+ 
     this.displayPhrase();
     this.displayLetters();
     this.checkIfWon();
+    this.displayMoney();
     
 
   }
@@ -132,7 +145,10 @@ class Game {
     $('#letters-list').empty();
 
     for (var i = 0; i < this.abcArr.length; i++) {
-      if (this.correctLetters.includes(this.abcArr[i]) || this.incorrectLetters.includes(this.abcArr[i])){
+      if (this.correctLetters.includes(this.abcArr[i])){
+        $('#letters-list').append(`<div class="col-1 abcs" data-letter="${this.abcArr[i]}" style="background: black; color: lime;"> ${this.abcArr[i].toUpperCase()}</div>`);
+      }
+      else if (this.incorrectLetters.includes(this.abcArr[i])) {
         $('#letters-list').append(`<div class="col-1 abcs" data-letter="${this.abcArr[i]}" style="background: black; color: red;"> ${this.abcArr[i].toUpperCase()}</div>`);
       }
       else {
@@ -143,12 +159,76 @@ class Game {
 
   startGame(){
     $('.cluebox').text(this.phraseArr.clue);
+    this.playerOne.turn = true;
     this.displayPhrase();
     this.displayLetters();
+    this.displayMoney();
+    
   }
 
+  displayMoney(){
+    $('.players').empty();
+    $('.players').append(`<div class="col-4 player">Player: ${this.playerOne.name}</br> Money: $ ${this.playerOne.money}</br> Turn: ${this.playerOne.turn}`)
+    $('.players').append(`<div class="col-4 player">Player: ${this.playerTwo.name}</br> Money: $ ${this.playerTwo.money}</br> Turn: ${this.playerTwo.turn}`)
+    $('.players').append(`<div class="col-4 player">Player: ${this.playerThree.name}</br> Money: $ ${this.playerThree.money}</br> Turn: ${this.playerThree.turn}`)
 
+  }
 
+  changePlayer(){
+    if (this.playerOne.turn === true && this.playerTwo.turn === false && this.playerThree.turn === false){
+      this.playerOne.turn = false;
+      this.playerTwo.turn = true;
+      this.playerThree.turn = false;
+      console.log('changed');
+    }
+    else if (this.playerTwo.turn === true && this.playerThree.turn === false && this.playerOne.turn === false){
+      this.playerOne.turn = false;
+      this.playerTwo.turn = false;
+      this.playerThree.turn = true;
+      console.log('overflow');
+    }
+    else if (this.playerThree.turn === true && this.playerOne.turn === false && this.playerTwo.turn === false){
+      this.playerOne.turn = true;
+      this.playerTwo.turn = false;
+      this.playerThree.turn = false;
+    }
+  }
+
+  addMoney(){
+    if (this.playerOne.turn === true){
+      this.playerOne.money += 200;
+    }
+    else if (this.playerTwo.turn === true){
+      this.playerTwo.money += 200;
+    }
+    else if (this.playerThree.turn === true){
+      this.playerThree.money += 200;
+    }
+  }
+
+  subtractMoney(){
+    if (this.playerOne.turn === true){
+      this.playerOne.money -= 200;
+    }
+    else if (this.playerTwo.turn === true){
+      this.playerTwo.money -= 200;
+    }
+    else if (this.playerThree.turn === true){
+      this.playerThree.money -= 200;
+    }
+  }
+
+  returnCurrentPlayer(){
+    if (this.playerOne.turn === true && this.playerTwo.turn === false && this.playerThree.turn === false){
+      return this.playerOne.name;
+    }
+    else if (this.playerTwo.turn === true && this.playerThree.turn === false && this.playerOne.turn === false){
+      return this.playerTwo.name;
+    }
+    else if (this.playerThree.turn === true && this.playerOne.turn === false && this.playerTwo.turn === false){
+      return this.playerThree.name;
+    }
+  }
 
 }
 

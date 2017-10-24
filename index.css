@@ -16,15 +16,14 @@
 	width: 30px;
 	height: 30px;
 	background: aliceblue;
-	color: blue;
+	color: darkorchid;
 	font-size: 1em;
 	text-align: center;
 	line-height: 30px;
 	border-radius: 3px;
-	border: 1px solid darkgray;
+	border: 1px solid darkorchid;
 	margin: .5%;
 	cursor: pointer;
-	cursor: ;
 }
 
 .cluebox {
@@ -36,4 +35,12 @@
 	text-align: center;
 	color: aliceblue;
 	background: black;
+}
+
+.player {
+	height: 200px;
+	font-size: 2em;
+	text-align: center;
+	background: lime;
+	color: darkgray;
 }
