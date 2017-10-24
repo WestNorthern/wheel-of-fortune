@@ -115,6 +115,7 @@ class Game {
       else{
         this.correctLetters.push(letter);
         this.addMoney();
+
       }
 
     }
@@ -123,6 +124,7 @@ class Game {
       
        this.incorrectLetters.push(letter);
        console.log(this.incorrectLetters);
+       this.subtractMoney();
        this.changePlayer();
        this.displayPhrase();
        this.displayLetters();
@@ -157,10 +159,11 @@ class Game {
 
   startGame(){
     $('.cluebox').text(this.phraseArr.clue);
+    this.playerOne.turn = true;
     this.displayPhrase();
     this.displayLetters();
     this.displayMoney();
-    this.playerOne.turn = true;
+    
   }
 
   displayMoney(){
@@ -203,7 +206,17 @@ class Game {
     }
   }
 
-
+  subtractMoney(){
+    if (this.playerOne.turn === true){
+      this.playerOne.money -= 200;
+    }
+    else if (this.playerTwo.turn === true){
+      this.playerTwo.money -= 200;
+    }
+    else if (this.playerThree.turn === true){
+      this.playerThree.money -= 200;
+    }
+  }
 
 
 }
