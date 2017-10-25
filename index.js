@@ -2,7 +2,7 @@
 
 const phraseArray = [
                       {
-                        phrase: '  naggers',
+                        phrase: '  ninjas',
                         clue: 'People that annoy you'
                       },
                       {
@@ -63,7 +63,7 @@ class Game {
 
                 };            
 
-
+    this.roundCounter = 1;
     this.phraseArr = phraseArr[(Math.floor(Math.random() * phraseArr.length))];
     this.phrase = this.phraseArr.phrase.split('');
     this.noSpacePhrase =  this.phrase.filter(function(str) {
@@ -83,6 +83,7 @@ class Game {
   checkIfWon(){
     if (this.correctLetters.length == this.phraseLetters.length) {
       alert(`${this.returnCurrentPlayer()} has solved the puzzle!`);
+      this.resetGame();
     }
     else{
       this.displayPhrase();
@@ -177,7 +178,8 @@ class Game {
     this.displayPhrase();
     this.displayLetters();
     this.displayMoney();
-    console.log(this.phraseArr)
+    console.log(this.phraseArr);
+    $('#round-count').text(`Round: ${this.roundCounter}`)
     
   }
 
@@ -254,19 +256,55 @@ class Game {
     }).join(''));
     if (guess == this.phrase.filter(function(str) { return /\S/g.test(str);}).join('')){
       alert(`${this.returnCurrentPlayer()} has solved the puzzle!`);
+      this.resetGame();
     }
     else{
       alert('Nope');
     }
   }
 
+  resetGame(){
+    this.playerOne.turn = true;
+    this.playerTwo.turn = false;
+    this.playerThree.turn = false;
+    this.phraseArr = phraseArray[(Math.floor(Math.random() * phraseArray.length))];
+    this.phrase = this.phraseArr.phrase.split('');
+    this.noSpacePhrase =  this.phrase.filter(function(str) {
+    return /\S/g.test(str);
+    }); // Filters out all of the white space
+    this.correctLetters = [];
+    this.incorrectLetters = [];
+    this.abcArr = ['b','c','d','f','g','h','j','k','l','m','n','p','q','r','s','t','v','w','x','y','z'];
+    this.vowArr = ['a', 'e', 'i', 'o', 'u'];
+    this.phraseLetters =  this.noSpacePhrase.filter(function(elem, index, self) 
+    {
+      return index == self.indexOf(elem); 
+    }); // Eliminates duplicate letters for clue checker
+
+    if (this.roundCounter >= 3){
+      this.roundCounter = 0;
+      this.playerOne.money = 0;
+      this.playerTwo.money = 0;
+      this.playerThree.money = 0;
+      alert('Game over!');
+    }
+
+    this.roundCounter++
+
+    this.startGame();
+
+  }
+
+  buyVowel(){
+    let checkToBuy = confirm('Would you like to buy a vowel?');
+
+    return checkToBuy;
+  }
+
 }
 
 
-
-
-
-
+let roundCounter = 1;
 
 
 $(function() { // Document ready function
@@ -274,27 +312,28 @@ $(function() { // Document ready function
 
   $(document).on('click', '.abcs', function(){
     let letter = $(this).data('letter');
-    wof.guessLetter(letter);
+    game1.guessLetter(letter);
   })
 
   $(document).on('click', '.vowels', function(){
     let letter = $(this).data('letter');
-    wof.guessLetter(letter);
+    let check = game1.buyVowel();
+    if (check === true){
+      game1.subtractMoney();
+      game1.subtractMoney();
+      game1.guessLetter(letter);
+
+    }
+
+    
   })
 
   $(document).on('click', '.solvebox', function(){
-    wof.solveByPhrase();
+    game1.solveByPhrase();
   })
   
-  let wof = new Game(phraseArray);
-  
-  wof.startGame();
-
-
-
-  // wof.displayClue();
-  // wof.checkIfWon();
  
-
+  let game1 = new Game(phraseArray);
+  game1.startGame();
 
 }); // End of Document Ready Function
