@@ -2,7 +2,7 @@
 
 const phraseArray = [
                       {
-                        phrase: '  naggers',
+                        phrase: '  ninjas',
                         clue: 'People that annoy you'
                       },
                       {
@@ -63,7 +63,7 @@ class Game {
 
                 };            
 
-
+    this.roundCounter = 1;
     this.phraseArr = phraseArr[(Math.floor(Math.random() * phraseArr.length))];
     this.phrase = this.phraseArr.phrase.split('');
     this.noSpacePhrase =  this.phrase.filter(function(str) {
@@ -179,6 +179,7 @@ class Game {
     this.displayLetters();
     this.displayMoney();
     console.log(this.phraseArr);
+    $('#round-count').text(`Round: ${this.roundCounter}`)
     
   }
 
@@ -280,6 +281,16 @@ class Game {
       return index == self.indexOf(elem); 
     }); // Eliminates duplicate letters for clue checker
 
+    if (this.roundCounter >= 3){
+      this.roundCounter = 0;
+      this.playerOne.money = 0;
+      this.playerTwo.money = 0;
+      this.playerThree.money = 0;
+      alert('Game over!');
+    }
+
+    this.roundCounter++
+
     this.startGame();
 
   }
@@ -292,9 +303,8 @@ class Game {
 
 }
 
-let game1 = new Game(phraseArray);
 
-
+let roundCounter = 1;
 
 
 $(function() { // Document ready function
